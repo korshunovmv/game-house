@@ -337,6 +337,24 @@ button:disabled {
   position: relative;
 }
 
+.pixel-house-scene.tier-0 {
+  border-color: #445564;
+}
+
+.pixel-house-scene.tier-1 {
+  border-color: #4f6577;
+}
+
+.pixel-house-scene.tier-2 {
+  border-color: #6080a0;
+  box-shadow: inset 0 0 0 1px rgba(131, 177, 216, 0.2);
+}
+
+.pixel-house-scene.tier-3 {
+  border-color: #6b98c4;
+  box-shadow: inset 0 0 0 1px rgba(157, 205, 240, 0.24), 0 0 0 1px rgba(114, 169, 212, 0.2);
+}
+
 .night-scene {
   background: linear-gradient(180deg, #111828 0%, #1b2740 36%, #202d3a 58%, #1b242b 59%, #161f25 100%);
 }
@@ -389,11 +407,19 @@ button:disabled {
   isolation: isolate;
 }
 
+.haze {
+  inset: 0;
+  background:
+    radial-gradient(circle at 42% 58%, rgba(130, 170, 198, 0.16), transparent 64%),
+    radial-gradient(circle at 68% 48%, rgba(122, 160, 186, 0.14), transparent 58%);
+  pointer-events: none;
+}
+
 .pixel-house {
   position: relative;
   width: 172px;
   height: 116px;
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.28));
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.32));
 }
 
 .pixel-house.tier-1 {
@@ -456,6 +482,10 @@ button:disabled {
   border-color: #3b4452;
 }
 
+.tier-3 .roof-shadow {
+  background: rgba(28, 36, 49, 0.58);
+}
+
 .body {
   left: 38px;
   top: 42px;
@@ -502,6 +532,11 @@ button:disabled {
 
 .door.bad {
   background: #4d3024;
+}
+
+.pixel-house.steel-door .door {
+  background: linear-gradient(180deg, #7f8fa2 0%, #667788 100%);
+  border-color: #2f3b48;
 }
 
 .porch {
@@ -583,6 +618,33 @@ button:disabled {
   left: 115px;
   top: -10px;
   animation-duration: 2.4s;
+}
+
+.workshop-sign {
+  left: 112px;
+  top: 46px;
+  width: 14px;
+  height: 8px;
+  background: #72849a;
+  border: 2px solid #405062;
+}
+
+.spike-trap {
+  left: 70px;
+  top: 103px;
+  width: 30px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, #5d5f63 0 3px, #8e949c 3px 6px);
+  border: 1px solid #3a3f46;
+}
+
+.battery-pack {
+  left: 142px;
+  top: 86px;
+  width: 13px;
+  height: 11px;
+  background: #4b626d;
+  border: 2px solid #2b3d46;
 }
 
 .celestial {
@@ -756,6 +818,22 @@ button:disabled {
   background: #495566;
 }
 
+.flood-beam {
+  width: 44px;
+  height: 16px;
+  left: 122px;
+  top: 60px;
+  pointer-events: none;
+}
+
+.flood-beam.on {
+  background: linear-gradient(90deg, rgba(255, 224, 160, 0.42) 0%, rgba(255, 224, 160, 0.08) 58%, transparent 100%);
+}
+
+.flood-beam.off {
+  background: transparent;
+}
+
 .zombie {
   width: 10px;
   height: 14px;
@@ -784,8 +862,8 @@ button:disabled {
   top: 2px;
   width: 2px;
   height: 2px;
-  background: #ff6a6a;
-  box-shadow: 4px 0 0 #ff6a6a;
+  background: #ff7777;
+  box-shadow: 4px 0 0 #ff7777;
 }
 
 .limb {
@@ -851,21 +929,21 @@ button:disabled {
 .z-lane-mid {
   --lane-scale: 0.92;
   bottom: 18px;
-  opacity: 0.9;
+  opacity: 0.92;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
 }
 
 .z-lane-back {
   --lane-scale: 0.84;
   bottom: 26px;
-  opacity: 0.75;
+  opacity: 0.8;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.26));
 }
 
 .raider {
   left: 74px;
   top: 86px;
-  transform: scaleX(-1);
+  transform: scaleX(-1) scale(1.08);
   animation: raider-hit 0.55s steps(2, end) infinite;
   opacity: 0.95;
   filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.5));

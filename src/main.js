@@ -2129,7 +2129,9 @@ function gameOverMarkup() {
 }
 
 function housePixelMarkup() {
-  const houseTier = Math.min(3, state.upgradesBuilt.length);
+  const builtCount = state.upgradesBuilt.length;
+  const houseTier = builtCount >= 5 ? 3 : builtCount >= 3 ? 2 : builtCount >= 1 ? 1 : 0;
+  const tierTitle = ["Укрытие", "Укрепленный дом", "Форпост", "Крепость"][houseTier];
   const wallState = state.base.wall > 65 ? "good" : state.base.wall > 35 ? "warn" : "bad";
   const doorState = state.base.door > 65 ? "good" : state.base.door > 35 ? "warn" : "bad";
   const powerOn = state.base.power > 30 || state.modifiers.generator;
@@ -2143,6 +2145,12 @@ function housePixelMarkup() {
   const stressExtra = state.base.stress > 65 ? 1 : 0;
   const zombieCount = Math.min(6, zombieCountBase + weatherExtra + stressExtra);
   const smokeOn = powerOn || houseTier >= 2;
+  const hasFortifiedDoor = state.upgradesBuilt.includes("fortifiedDoor");
+  const hasWorkshop = state.upgradesBuilt.includes("workshop");
+  const hasGenerator = state.modifiers.generator;
+  const hasWatchtower = state.modifiers.watchtower;
+  const hasGreenhouse = state.modifiers.greenhouse;
+  const hasRadio = state.modifiers.radio;
   const nowSeconds = Date.now() / 1000;
 
   const zombieSprites = Array.from({ length: zombieCount }).map((_, idx) => {
@@ -2159,6 +2167,7 @@ function housePixelMarkup() {
   return `
     <div class="pixel-house-scene ${tierClass} ${night ? "night-scene" : ""} ${rainy ? "rain-scene" : ""} ${raidActive ? "raid-active" : ""} ${severeDamage ? "severe-damage" : ""}">
       <div class="pixel-house-wrap">
+        <span class="px haze"></span>
         <span class="px celestial ${night ? "moon" : "sun"}"></span>
         <span class="px cloud c1"></span>
         <span class="px cloud c2"></span>
@@ -2166,7 +2175,7 @@ function housePixelMarkup() {
         <span class="px bush left"></span>
         <span class="px bush right"></span>
         <span class="px ground-shadow"></span>
-        <div class="pixel-house ${tierClass} ${raidActive ? "under-raid" : ""} ${severeDamage ? "damaged" : ""}">
+        <div class="pixel-house ${tierClass} ${hasFortifiedDoor ? "steel-door" : ""} ${hasWorkshop ? "workshop-on" : ""} ${raidActive ? "under-raid" : ""} ${severeDamage ? "damaged" : ""}">
           ${houseTier >= 1 ? `<span class="px barricade left"></span><span class="px barricade right"></span>` : ""}
           <span class="px roof"></span>
           <span class="px roof-shadow"></span>
@@ -2179,13 +2188,16 @@ function housePixelMarkup() {
           <span class="px frame left"></span>
           <span class="px frame right"></span>
           <span class="px chimney"></span>
+          ${hasWorkshop ? `<span class="px workshop-sign"></span>` : ""}
+          ${hasFortifiedDoor ? `<span class="px spike-trap"></span>` : ""}
+          ${hasGenerator ? `<span class="px battery-pack"></span>` : ""}
           ${smokeOn ? `<span class="px smoke s1"></span><span class="px smoke s2"></span><span class="px smoke s3"></span>` : ""}
-          ${state.modifiers.watchtower ? `<span class="px tower"></span>` : ""}
-          ${state.modifiers.greenhouse ? `<span class="px greenhouse"></span>` : ""}
-          ${state.modifiers.radio ? `<span class="px antenna"></span>` : ""}
-          ${state.modifiers.generator ? `<span class="px cable"></span>` : ""}
+          ${hasWatchtower ? `<span class="px tower"></span>` : ""}
+          ${hasGreenhouse ? `<span class="px greenhouse"></span>` : ""}
+          ${hasRadio ? `<span class="px antenna"></span>` : ""}
+          ${hasGenerator ? `<span class="px cable"></span>` : ""}
           ${houseTier >= 2 ? `<span class="px wall-plate left"></span><span class="px wall-plate right"></span>` : ""}
-          ${houseTier >= 3 ? `<span class="px gate"></span><span class="px flood-light ${powerOn ? "on" : "off"}"></span>` : ""}
+          ${houseTier >= 3 ? `<span class="px gate"></span><span class="px flood-light ${powerOn ? "on" : "off"}"></span><span class="px flood-beam ${powerOn ? "on" : "off"}"></span>` : ""}
           ${raidActive ? `<span class="px impact ${raiderLane}"></span>` : ""}
           ${raidActive ? `<span class="px zombie raider z-brute ${raiderLane}"></span>` : ""}
         </div>
@@ -2193,7 +2205,7 @@ function housePixelMarkup() {
       </div>
       <div class="pixel-legend muted">
         ${raidActive ? "НАЛЕТ: активная атака базы | " : ""}
-        Уровень дома: ${houseTier}/3 | Стены: ${state.base.wall}/100 | Дверь: ${state.base.door}/100 | Энергия: ${state.base.power}/100
+        Стадия: ${tierTitle} (${houseTier}/3) | Стены: ${state.base.wall}/100 | Дверь: ${state.base.door}/100 | Энергия: ${state.base.power}/100
       </div>
     </div>
   `;
